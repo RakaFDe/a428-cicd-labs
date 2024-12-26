@@ -20,6 +20,7 @@
                 steps {
                     sh './jenkins/scripts/deliver.sh' 
                     input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)' 
+                    echo "stage deploy"
                     sh './jenkins/scripts/kill.sh' 
                 }
             }
