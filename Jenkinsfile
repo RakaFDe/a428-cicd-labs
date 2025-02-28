@@ -22,6 +22,7 @@
                     echo "check docker"
                     sh "docker --version"
                     sh "npm start &"
+                    sh"echo $! > .pidfile"
 		            echo " tunggu"
 		            sh "sleep 60"
 
@@ -30,6 +31,7 @@
                     input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)' 
                     echo "Menghentikan container..."
                     
+                    sh "kill $(cat .pidfile)"
                 }
             }
         }
