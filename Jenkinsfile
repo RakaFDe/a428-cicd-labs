@@ -2,10 +2,22 @@
         agent {
             docker {
                 image 'node:16-buster-slim'
-                args '-p 3000:3000'
+                args '-p 3001:3001'
             }
         }
         stages {
+            stage('Check Port') {
+                steps {
+                    script {
+                        def portInUse = sh(script: "netstat -tulnp | grep ':3000 ' || echo 'unused'", returnStdout: true).trim()
+                        if (portInUse != "unused") {
+                            error "Port 3000 sudah digunakan! Harap pastikan tidak ada aplikasi lain yang berjalan di port ini."
+                        } else {
+                            echo "Port 3000 tersedia, melanjutkan build..."
+                        }
+                    }
+                }
+            }
             stage('Build') {
                 steps {
                     sh 'npm install'
@@ -20,7 +32,7 @@
             stage('Deploy') { 
                 steps {
 		    echo "Menjalankan aplikasi dalam Docker container..."
-                    sh 'docker run -d --name react_app -p 3000:3000 node:16-buster-slim sh -c "npm install && npm start"'
+                    sh 'docker run -d --name react_app -p 3001:3001 node:16-buster-slim sh -c "npm install && npm start"'
 
 		    echo " tunggu"
 		    sh "sleep 60"
