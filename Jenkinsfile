@@ -6,9 +6,14 @@
             }
         }
         stages {
-            stage('Check Port') {
+            stage('Check Port dan docker accessible') {
                 steps {
                     script {
+                        sh 'whoami'
+                        sh 'groups'
+                        sh 'docker --version || echo "Docker CLI tidak tersedia"'
+                        sh 'docker ps || echo "Docker daemon tidak berjalan"'
+                        sh "sleep 20"
                         def portInUse = sh(script: "netstat -tulnp | grep ':3000 ' || echo 'unused'", returnStdout: true).trim()
                         if (portInUse != "unused") {
                             error "Port 3000 sudah digunakan! Harap pastikan tidak ada aplikasi lain yang berjalan di port ini."
