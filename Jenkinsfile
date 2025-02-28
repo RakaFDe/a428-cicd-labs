@@ -66,7 +66,21 @@ pipeline {
                 input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)' 
 
                 echo "🛑 Menghentikan container..."
-                sh 'docker stop react_app && docker rm react_app'
+                sh '''
+                    if [ "$(docker ps -q -f name=react_app)" ]; then
+                    echo "🛑 Container react_app sedang berjalan, menghentikan..."
+                        docker stop react_app
+                    else
+                        echo "⚠️ Container react_app tidak berjalan."
+                    fi
+
+                    if [ "$(docker ps -aq -f name=react_app)" ]; then
+                        echo "🗑️ Menghapus container react_app..."
+                        docker rm react_app
+                    else
+                        echo "✅ Tidak ada container react_app yang perlu dihapus."
+                    fi
+                    '''
             }
         }
     }
