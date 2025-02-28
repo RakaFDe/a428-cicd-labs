@@ -45,11 +45,14 @@
             }
             stage('Deploy') { 
                 steps {
-		    echo "Menjalankan aplikasi dalam Docker container..."
-                    sh 'docker run -d  -p 3001:3000 node:16-buster-slim --name react_app sh -c "npm install && npm start"'
+                    sh 'docker stop react_app || true'
+                    sh 'docker rm react_app || true'
 
-		    echo " tunggu"
-		    sh "sleep 60"
+		            echo "Menjalankan aplikasi dalam Docker container..."
+                    sh 'docker run -d --name react_app -p 3001:3000 node:16-buster-slim sh -c "npm install && npm start"'
+
+		            echo " tunggu"
+		            sh "sleep 60"
 
                     input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)' 
                     echo "Menghentikan container..."
