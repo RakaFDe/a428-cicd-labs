@@ -3,9 +3,17 @@
             docker {
                 image 'node:16-buster-slim'
                 args '-p 3001:3001'
+                args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
             }
         }
         stages {
+            stage('Install Docker CLI') {
+                steps {
+                    sh '''
+                    apt update
+                    apt install -y docker.io
+                    '''
+                }
             stage('Check Port dan docker accessible') {
                 steps {
                     script {
