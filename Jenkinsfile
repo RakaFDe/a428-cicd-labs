@@ -53,10 +53,10 @@ pipeline {
                 sh '''
                 docker run -d --name react_app \
                 -p 3001:3000 \
-                -v $(pwd)/react-app:/app \
+                -v /var/jenkins_home/workspace/submission-cicd-pipeline-rakafitra:/app \
                 -w /app \
                 node:16-buster-slim \
-                sh -c "ls -lah && npm install && npm run build && npm start && tail -f /dev/null"
+                sh -c "ls -lah /app && npm install && npm run build && npm start && tail -f /dev/null"
                 '''
 
 
