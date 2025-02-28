@@ -61,7 +61,8 @@ pipeline {
                 sh 'docker ps -a'
                 echo "⏳ Tunggu 60 detik agar aplikasi berjalan..."
                 sh "sleep 60"
-
+                sh 'docker ps -a'
+                sh "sleep 10"
                 input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)' 
 
                 echo "🛑 Menghentikan container..."
