@@ -50,13 +50,10 @@ pipeline {
                 sh 'docker rm react_app || true'
                 sh 'pwd && ls -lah'
                 echo "🚀 Menjalankan aplikasi dalam Docker container..."
-                sh '''
-                docker run -d --name react_app \
-                -p 3001:3000 \
-                -v /var/jenkins_home/workspace/submission-cicd-pipeline-rakafitra:/app \
-                -w /app \
-                node:16-buster-slim \
-                sh -c "ls -lah /app && npm install && npm run build && npm start && tail -f /dev/null"
+                sh 'docker run -d --name react_app -p 3001:3000 -v $(pwd):/app -w /app node:16-buster-slim sh -c "cd /app && ls -lah && npm install && npm run build && npm start"'
+                sh'''sleep 5
+                    docker ps -a | grep react_app
+                    docker logs react_app
                 '''
 
 
