@@ -2,7 +2,7 @@
         agent {
             docker {
                 image 'node:16-buster-slim'
-                args '-p 3001:3001'
+                args '-p 3001:3000'
                 args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
                 args '--user root'
             }
