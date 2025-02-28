@@ -48,13 +48,13 @@ pipeline {
                 echo "🔄 Menghapus container lama jika ada..."
                 sh 'docker stop react_app || true'
                 sh 'docker rm react_app || true'
-
+                sh 'pwd && ls -lah'
                 echo "🚀 Menjalankan aplikasi dalam Docker container..."
                 sh '''
                 docker run -d --name react_app \
                 -p 3001:3000 \
                 -v $(pwd):/app \
-                -w /app \
+                -w /app/react-app \
                 node:16-buster-slim \
                 sh -c "npm install && npm run build && npm start && tail -f /dev/null"
                 '''
