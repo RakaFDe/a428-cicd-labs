@@ -2,10 +2,36 @@ pipeline {
     agent {
         docker {
             image 'node:16-buster-slim'
+            args '-p 3001:3000'
+            args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
             args '--user root'  // Jalankan sebagai root agar bisa install dependencies
         }
     }
     stages {
+        stage('Install Docker CLI') {
+                steps {
+                    sh '''
+                    apt update && apt install -y docker.io
+                    '''
+                }
+            }
+            stage('Check Port dan docker accessible') {
+                steps {
+                    script {
+                        sh 'whoami'
+                        sh 'groups'
+                        sh 'docker --version || echo "Docker CLI tidak tersedia"'
+                        sh 'docker ps || echo "Docker daemon tidak berjalan"'
+                        sh "sleep 20"
+                        def portInUse = sh(script: "netstat -tulnp | grep ':3000 ' || echo 'unused'", returnStdout: true).trim()
+                        if (portInUse != "unused") {
+                            error "Port 3000 sudah digunakan! Harap pastikan tidak ada aplikasi lain yang berjalan di port ini."
+                        } else {
+                            echo "Port 3000 tersedia, melanjutkan build..."
+                        }
+                    }
+                }
+            }
         stage('Build') {
             steps {
                 sh 'npm install'
@@ -18,6 +44,7 @@ pipeline {
         }
         stage('Deploy') { 
             steps {
+
                 echo "🔄 Menghapus container lama jika ada..."
                 sh 'docker stop react_app || true'
                 sh 'docker rm react_app || true'
