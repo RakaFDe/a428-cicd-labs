@@ -52,7 +52,7 @@ pipeline {
                 echo "🚀 Menjalankan aplikasi dalam Docker container..."
                 sh '''
                 docker run -d --name react_app \
-                -p 3000:3000 \
+                -p 3001:3000 \
                 -v $(pwd):/app \
                 -w /app \
                 node:16-buster-slim \
