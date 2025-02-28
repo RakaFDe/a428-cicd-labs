@@ -14,6 +14,7 @@
                     apt install -y docker.io
                     '''
                 }
+            }
             stage('Check Port dan docker accessible') {
                 steps {
                     script {
