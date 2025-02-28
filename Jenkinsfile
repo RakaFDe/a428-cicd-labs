@@ -15,7 +15,7 @@ pipeline {
                     '''
                 }
             }
-            stage('Check Port dan docker accessible') {
+           stage('Check Port dan docker accessible') {
                 steps {
                     script {
                         sh 'whoami'
@@ -23,7 +23,7 @@ pipeline {
                         sh 'docker --version || echo "Docker CLI tidak tersedia"'
                         sh 'docker ps || echo "Docker daemon tidak berjalan"'
                         sh "sleep 20"
-                        def portInUse = sh(script: "netstat -tulnp | grep ':3000 ' || echo 'unused'", returnStdout: true).trim()
+                        def portInUse = sh(script: "ss -tulnp | grep ':3000 ' || echo 'unused'", returnStdout: true).trim()
                         if (portInUse != "unused") {
                             error "Port 3000 sudah digunakan! Harap pastikan tidak ada aplikasi lain yang berjalan di port ini."
                         } else {
@@ -58,7 +58,7 @@ pipeline {
                 node:16-buster-slim \
                 sh -c "npm install && npm run build && npm start"
                 '''
-
+                sh 'docker ps -a'
                 echo "⏳ Tunggu 60 detik agar aplikasi berjalan..."
                 sh "sleep 60"
 
