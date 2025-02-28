@@ -53,11 +53,13 @@ pipeline {
                 sh '''
                 docker run -d --name react_app \
                 -p 3001:3000 \
-                -v $(pwd):/app \
+                -v $(pwd)/react-app:/app \
                 -w /app \
                 node:16-buster-slim \
                 sh -c "ls -lah && npm install && npm run build && npm start && tail -f /dev/null"
                 '''
+
+
                 sh 'docker ps -a'
                 echo "⏳ Tunggu 60 detik agar aplikasi berjalan..."
                 sh "sleep 60"
