@@ -14,24 +14,20 @@
             }
             stage('Test') {
                 steps {
-                    sh 'npm test'
+                    sh './jenkins/scripts/test.sh'
                 }
             }
             stage('Deploy') { 
                 steps {
-                    echo "check docker"
-                    sh "docker --version"
-                    sh "npm start &"
-                    //sh"echo $! > .pidfile"
-		            echo " tunggu"
-		            sh "sleep 60"
+		    echo "Menjalankan aplikasi dalam Docker container..."
+                    sh 'docker run -d --name react_app -p 3000:3000 node:16-buster-slim sh -c "npm install && npm start"'
 
-		           
+		    echo " tunggu"
+		    sh "sleep 60"
 
                     input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)' 
                     echo "Menghentikan container..."
-                    
-                    sh "kill $(cat .pidfile)"
+                    sh 'docker stop react_app && docker rm react_app'
                 }
             }
         }
