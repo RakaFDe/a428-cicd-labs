@@ -46,7 +46,7 @@
             stage('Deploy') { 
                 steps {
 		    echo "Menjalankan aplikasi dalam Docker container..."
-                    sh 'docker run -d --name react_app -p 3001:3001 node:16-buster-slim sh -c "npm install && npm start"'
+                    sh 'docker run -d  -p 3001:3000 node:16-buster-slim --name react_app sh -c "npm install && npm start"'
 
 		    echo " tunggu"
 		    sh "sleep 60"
