@@ -22,7 +22,7 @@
                     echo "check docker"
                     sh "docker --version"
                     sh "npm start &"
-                    sh"echo $! > .pidfile"
+                    //sh"echo $! > .pidfile"
 		            echo " tunggu"
 		            sh "sleep 60"
 
