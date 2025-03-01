@@ -22,14 +22,18 @@ pipeline {
 
         stage('Test') {
             steps {
+                sh 'chmod +x ./jenkins/scripts/test_docker.sh'
                 sh './jenkins/scripts/test_docker.sh'
             }
         }
 
         stage('Deploy') {
             steps {
+                 sh 'chmod +x ./jenkins/scripts/deliver_docker.sh'
                 sh './jenkins/scripts/deliver_docker.sh'
+                sleep 30
                 input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)'
+                sh 'chmod +x ./jenkins/scripts/kill_docker.sh'
                 sh './jenkins/scripts/kill_docker.sh'
             }
         }
