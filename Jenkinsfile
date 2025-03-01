@@ -12,11 +12,22 @@ pipeline {
             }
         }
 
+
         stage('Build') {
             steps {
                 script {
+                    sh 'npm install'
                     sh 'docker build -t $IMAGE_NAME .'
                 }
+            }
+        }
+
+        stage('Test Docker') {
+            steps {
+                sh 'node -v'  // Pastikan Node.js tersedia
+                sh 'npm -v'   // Pastikan npm tersedia
+                sh 'chmod +x ./jenkins/scripts/test_docker.sh'
+                sh './jenkins/scripts/test_docker.sh'
             }
         }
 
