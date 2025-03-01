@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/RakaFDe/a428-cicd-labs.git'
+                git branch:'react-app', url: 'https://github.com/RakaFDe/a428-cicd-labs.git'
             }
         }
 
