@@ -14,8 +14,13 @@
             stage('Test') {
                 steps {
                     sh './jenkins/scripts/test.sh'
-                    input message: 'Lanjutkan ke tahap Deploy? (Klik "Proceed" untuk mengakhiri)' 
+                    
                 }
+            }
+            stage('manual approval'){
+                steps{
+                    input message: 'Lanjutkan ke tahap Deploy? (Klik "Proceed" untuk mengakhiri)' 
+                }                
             }
             stage('Deploy') { 
                 steps {
